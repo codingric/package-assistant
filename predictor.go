@@ -34,7 +34,7 @@ func NewPredictor(request CloudMailInPayload) (*Predictor, error) {
 }
 
 func (p *Predictor) IsDelivery() bool {
-	deliveredRegex := pcre.MustCompile(`(?i)(?<=package|order|parcel).*(delivered|arrived)(?! in your country)`)
+	deliveredRegex := pcre.MustCompile(`(?i)(?<=package|order|parcel).*(was|has been).*(delivered)(?! in your country)`)
 	return deliveredRegex.MatchString(p.cleanText)
 }
 
