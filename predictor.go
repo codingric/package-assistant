@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"strings"
 
 	"go.arsenm.dev/pcre"
@@ -22,6 +23,8 @@ func NewPredictor(request CloudMailInPayload) (*Predictor, error) {
 	condensedText := whitespaceRegex.ReplaceAllString(sanitizedText, " ")
 	// Trim any leading or trailing whitespace.
 	cleanText := strings.TrimSpace(condensedText)
+
+	log.Printf("Body: %s\n", cleanText)
 
 	return &Predictor{
 		payload:   request,
