@@ -47,8 +47,13 @@ func httpHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	if !p.IsDelivery() {
+		log.Println("Not a delivery")
+		http.Error(w, "Not a delivery", http.StatusBadRequest)
+		return
+	}
 
-	t, pr := p.ExtractTracking(), p.ExtarctProvider()
+	t, pr := p.ExtractTracking(), p.ExtractProvider()
 	if t == "" {
 		log.Println("No tracking number found")
 		http.Error(w, "No tracking number found", http.StatusBadRequest)

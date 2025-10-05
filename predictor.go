@@ -34,7 +34,7 @@ func NewPredictor(request CloudMailInPayload) (*Predictor, error) {
 }
 
 func (p *Predictor) IsDelivery() bool {
-	deliveredRegex := pcre.MustCompile(`(?i)(?<=package|order|parcel).*(was|has been).*(delivered)(?! in your country)`)
+	deliveredRegex := pcre.MustCompile(`(?i)(?<=package|order|parcel).*(was|has been).*(delivered)`)
 	return deliveredRegex.MatchString(p.cleanText)
 }
 
@@ -58,7 +58,7 @@ func (p *Predictor) ExtractTracking() string {
 	return ""
 }
 
-func (p *Predictor) ExtarctProvider() string {
+func (p *Predictor) ExtractProvider() string {
 	parts := strings.Split(p.payload.Headers.From, " ")
 	return strings.Join(parts[:len(parts)-1], " ")
 }
