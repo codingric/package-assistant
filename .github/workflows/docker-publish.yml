@@ -28,6 +28,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
 
+      - name: Get short commit SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
       - name: Build and push multi-arch Docker image
         uses: docker/build-push-action@v5
         with:
@@ -35,3 +39,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ steps.vars.outputs.sha_short }}

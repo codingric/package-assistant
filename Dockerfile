@@ -2,6 +2,8 @@
 # This stage uses the official Go image to build the application.
 FROM golang:1.25-alpine AS builder
 
+ARG VERSION
+
 # Set the working directory inside the container
 WORKDIR /app
 
@@ -16,7 +18,7 @@ COPY . .
 
 # Build the Go application, creating a static binary.
 # CGO_ENABLED=0 is crucial for building a static binary that can run in a minimal image.
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -a -installsuffix cgo -o /app/main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-X main.version=${VERSION}" -a -installsuffix cgo -o /app/main .
 
 # ---- Final Stage ----
 # This stage uses a minimal Alpine image for the final container.

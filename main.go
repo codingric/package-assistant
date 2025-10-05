@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+var version = "dev"
+
 type H map[string]any
 
 // CloudMailInPayload struct represents the JSON payload from CloudMailIn.
@@ -72,6 +74,8 @@ func httpHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 
 	http.HandleFunc("/", httpHandler)
+
+	log.Printf("Version: %s", version)
 
 	port := "8080"
 	log.Printf("Server starting on port %s", port)
