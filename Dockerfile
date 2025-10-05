@@ -16,7 +16,7 @@ COPY . .
 
 # Build the Go application, creating a static binary.
 # CGO_ENABLED=0 is crucial for building a static binary that can run in a minimal image.
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app/main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -a -installsuffix cgo -o /app/main .
 
 # ---- Final Stage ----
 # This stage uses a minimal Alpine image for the final container.
