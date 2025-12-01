@@ -19,7 +19,7 @@ Your package 3781054117855 has arrived in your country/region. Track it by click
 	}
 	p, _ := NewPredictor(ali)
 	assert.False(t, p.IsDelivery())
-	assert.Equal(t, "Aliexpress", p.ExtarctProvider())
+	assert.Equal(t, "Aliexpress", p.ExtractProvider())
 	assert.Equal(t, "3781054117855", p.ExtractTracking())
 
 	ali.HTML = `Hi Ricardo Salinas,
@@ -47,7 +47,7 @@ Your package 3781053936972 has been successfully delivered! Please let us know t
 
 	p, _ = NewPredictor(amz)
 	assert.True(t, p.IsDelivery())
-	assert.Equal(t, "Amazon.com", p.ExtarctProvider())
+	assert.Equal(t, "Amazon.com", p.ExtractProvider())
 	assert.Equal(t, "249-4398134-5142202", p.ExtractTracking())
 
 }
