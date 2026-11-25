@@ -1,8 +1,13 @@
 # ---- Build Stage ----
 # This stage uses the official Go image to build the application.
-FROM golang:1.25-alpine AS builder
+# It runs on the CI runner's native platform ($BUILDPLATFORM) and
+# cross-compiles for each target platform, so no emulation is needed here.
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS builder
 
 ARG VERSION
+# Populated automatically by BuildKit for each requested platform.
+ARG TARGETOS
+ARG TARGETARCH
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -16,9 +21,9 @@ RUN go mod download
 # Copy the rest of the source code into the container
 COPY . .
 
-# Build the Go application, creating a static binary.
+# Build the Go application, creating a static binary for the target platform.
 # CGO_ENABLED=0 is crucial for building a static binary that can run in a minimal image.
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-X main.version=${VERSION}" -a -installsuffix cgo -o /app/main .
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags "-X main.version=${VERSION}" -a -installsuffix cgo -o /app/main .
 
 # ---- Final Stage ----
 # This stage uses a minimal Alpine image for the final container.
