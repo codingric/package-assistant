@@ -118,6 +118,15 @@ func main() {
 	client := NewLLMClientFromEnv()
 	log.Printf("Using LLM API at %s (model %s)", client.apiURL, client.model)
 
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	err := client.Healthy(ctx)
+	cancel()
+	if err != nil {
+		log.Printf("WARNING: LLM API health check failed: %v — /parse will fail until the configured URL serves the LLM", err)
+	} else {
+		log.Println("LLM API health check passed")
+	}
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/parse", makeParseHandler(client))
 	mux.HandleFunc("/health", makeHealthHandler(client))
