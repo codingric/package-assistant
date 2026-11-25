@@ -1,19 +1,14 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"io"
-	"log"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
-	"sync"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -150,32 +145,6 @@ func TestLLMClient_ClassifyInvalidJSON(t *testing.T) {
 	require.Error(t, err)
 }
 
-// syncBuffer is a goroutine-safe log sink for asserting on async classification output.
-type syncBuffer struct {
-	mu  sync.Mutex
-	buf bytes.Buffer
-}
-
-func (b *syncBuffer) Write(p []byte) (int, error) {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-	return b.buf.Write(p)
-}
-
-func (b *syncBuffer) String() string {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-	return b.buf.String()
-}
-
-func captureLogs(t *testing.T) *syncBuffer {
-	t.Helper()
-	buf := &syncBuffer{}
-	log.SetOutput(buf)
-	t.Cleanup(func() { log.SetOutput(os.Stderr) })
-	return buf
-}
-
 type stubClassifier struct {
 	info *DeliveryInfo
 	err  error
@@ -194,13 +163,11 @@ func postPayload(t *testing.T, handler http.HandlerFunc) *httptest.ResponseRecor
 	return rec
 }
 
-func TestHandler_AcknowledgesImmediately(t *testing.T) {
-	logs := captureLogs(t)
+func TestHandler_Delivery(t *testing.T) {
 	handler := makeHandler(stubClassifier{info: &DeliveryInfo{
 		IsDelivered:    true,
 		Carrier:        "AliExpress",
 		TrackingNumber: "3781053936972",
-		EvidencePhrase: "has been successfully delivered",
 	}})
 
 	rec := postPayload(t, handler)
@@ -208,15 +175,11 @@ func TestHandler_AcknowledgesImmediately(t *testing.T) {
 
 	var resp H
 	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &resp))
-	assert.Equal(t, "accepted", resp["status"])
-
-	assert.Eventually(t, func() bool {
-		return strings.Contains(logs.String(), "Provider: AliExpress, Tracking 3781053936972")
-	}, 2*time.Second, 10*time.Millisecond, "expected classification verdict in logs")
+	assert.Equal(t, "3781053936972", resp["tracking"])
+	assert.Equal(t, "AliExpress", resp["provider"])
 }
 
 func TestHandler_UnknownProvider(t *testing.T) {
-	logs := captureLogs(t)
 	handler := makeHandler(stubClassifier{info: &DeliveryInfo{
 		IsDelivered:    true,
 		TrackingNumber: "3781053936972",
@@ -224,46 +187,28 @@ func TestHandler_UnknownProvider(t *testing.T) {
 
 	rec := postPayload(t, handler)
 	assert.Equal(t, http.StatusOK, rec.Code)
-
-	assert.Eventually(t, func() bool {
-		return strings.Contains(logs.String(), "Provider: Unknown")
-	}, 2*time.Second, 10*time.Millisecond)
+	assert.Contains(t, rec.Body.String(), `"provider":"Unknown"`)
 }
 
 func TestHandler_NotDelivery(t *testing.T) {
-	logs := captureLogs(t)
 	handler := makeHandler(stubClassifier{info: &DeliveryInfo{IsDelivered: false}})
 
 	rec := postPayload(t, handler)
-	assert.Equal(t, http.StatusOK, rec.Code)
-
-	assert.Eventually(t, func() bool {
-		return strings.Contains(logs.String(), "Not a delivery")
-	}, 2*time.Second, 10*time.Millisecond)
+	assert.Equal(t, http.StatusBadRequest, rec.Code)
 }
 
 func TestHandler_NoTrackingNumber(t *testing.T) {
-	logs := captureLogs(t)
 	handler := makeHandler(stubClassifier{info: &DeliveryInfo{IsDelivered: true}})
 
 	rec := postPayload(t, handler)
-	assert.Equal(t, http.StatusOK, rec.Code)
-
-	assert.Eventually(t, func() bool {
-		return strings.Contains(logs.String(), "No tracking number found")
-	}, 2*time.Second, 10*time.Millisecond)
+	assert.Equal(t, http.StatusBadRequest, rec.Code)
 }
 
 func TestHandler_ClassifierError(t *testing.T) {
-	logs := captureLogs(t)
 	handler := makeHandler(stubClassifier{err: errors.New("LLM unreachable")})
 
 	rec := postPayload(t, handler)
-	assert.Equal(t, http.StatusOK, rec.Code)
-
-	assert.Eventually(t, func() bool {
-		return strings.Contains(logs.String(), "Classification failed: LLM unreachable")
-	}, 2*time.Second, 10*time.Millisecond)
+	assert.Equal(t, http.StatusBadGateway, rec.Code)
 }
 
 func TestHandler_BadJSON(t *testing.T) {
