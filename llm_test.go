@@ -146,12 +146,17 @@ func TestLLMClient_ClassifyInvalidJSON(t *testing.T) {
 }
 
 type stubClassifier struct {
-	info *DeliveryInfo
-	err  error
+	info      *DeliveryInfo
+	err       error
+	healthErr error
 }
 
 func (s stubClassifier) Classify(_ context.Context, _ CloudMailInPayload) (*DeliveryInfo, error) {
 	return s.info, s.err
+}
+
+func (s stubClassifier) Healthy(_ context.Context) error {
+	return s.healthErr
 }
 
 func postPayload(t *testing.T, handler http.HandlerFunc) *httptest.ResponseRecorder {
@@ -164,7 +169,7 @@ func postPayload(t *testing.T, handler http.HandlerFunc) *httptest.ResponseRecor
 }
 
 func TestHandler_Delivery(t *testing.T) {
-	handler := makeHandler(stubClassifier{info: &DeliveryInfo{
+	handler := makeParseHandler(stubClassifier{info: &DeliveryInfo{
 		IsDelivered:    true,
 		Carrier:        "AliExpress",
 		TrackingNumber: "3781053936972",
@@ -180,7 +185,7 @@ func TestHandler_Delivery(t *testing.T) {
 }
 
 func TestHandler_UnknownProvider(t *testing.T) {
-	handler := makeHandler(stubClassifier{info: &DeliveryInfo{
+	handler := makeParseHandler(stubClassifier{info: &DeliveryInfo{
 		IsDelivered:    true,
 		TrackingNumber: "3781053936972",
 	}})
@@ -191,36 +196,121 @@ func TestHandler_UnknownProvider(t *testing.T) {
 }
 
 func TestHandler_NotDelivery(t *testing.T) {
-	handler := makeHandler(stubClassifier{info: &DeliveryInfo{IsDelivered: false}})
+	handler := makeParseHandler(stubClassifier{info: &DeliveryInfo{IsDelivered: false}})
 
 	rec := postPayload(t, handler)
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
 }
 
 func TestHandler_NoTrackingNumber(t *testing.T) {
-	handler := makeHandler(stubClassifier{info: &DeliveryInfo{IsDelivered: true}})
+	handler := makeParseHandler(stubClassifier{info: &DeliveryInfo{IsDelivered: true}})
 
 	rec := postPayload(t, handler)
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
 }
 
 func TestHandler_ClassifierError(t *testing.T) {
-	handler := makeHandler(stubClassifier{err: errors.New("LLM unreachable")})
+	handler := makeParseHandler(stubClassifier{err: errors.New("LLM unreachable")})
 
 	rec := postPayload(t, handler)
 	assert.Equal(t, http.StatusBadGateway, rec.Code)
 }
 
 func TestHandler_BadJSON(t *testing.T) {
-	handler := makeHandler(stubClassifier{})
+	handler := makeParseHandler(stubClassifier{})
 	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader("{not json"))
 	rec := httptest.NewRecorder()
 	handler(rec, req)
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
 }
 
+type spyClassifier struct {
+	called bool
+}
+
+func (s *spyClassifier) Classify(_ context.Context, _ CloudMailInPayload) (*DeliveryInfo, error) {
+	s.called = true
+	return &DeliveryInfo{}, nil
+}
+
+func (s *spyClassifier) Healthy(_ context.Context) error {
+	return nil
+}
+
+func TestHandler_EmptyPayloadRejected(t *testing.T) {
+	spy := &spyClassifier{}
+	handler := makeParseHandler(spy)
+
+	req := httptest.NewRequest(http.MethodPost, "/parse", strings.NewReader("{}"))
+	req.Header.Set("X-Forwarded-For", "203.0.113.10")
+	rec := httptest.NewRecorder()
+	handler(rec, req)
+
+	assert.Equal(t, http.StatusBadRequest, rec.Code)
+	assert.False(t, spy.called, "empty payload must not reach the LLM")
+}
+
+func TestHealthHandler_OK(t *testing.T) {
+	handler := makeHealthHandler(stubClassifier{})
+
+	req := httptest.NewRequest(http.MethodGet, "/health", nil)
+	rec := httptest.NewRecorder()
+	handler(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.Contains(t, rec.Body.String(), `"status":"ok"`)
+}
+
+func TestHealthHandler_LLMUnavailable(t *testing.T) {
+	handler := makeHealthHandler(stubClassifier{healthErr: errors.New("connection refused")})
+
+	req := httptest.NewRequest(http.MethodGet, "/health", nil)
+	rec := httptest.NewRecorder()
+	handler(rec, req)
+
+	assert.Equal(t, http.StatusServiceUnavailable, rec.Code)
+}
+
+func TestHealthHandler_MethodNotAllowed(t *testing.T) {
+	handler := makeHealthHandler(stubClassifier{})
+
+	req := httptest.NewRequest(http.MethodPost, "/health", nil)
+	rec := httptest.NewRecorder()
+	handler(rec, req)
+
+	assert.Equal(t, http.StatusMethodNotAllowed, rec.Code)
+}
+
+func TestLLMClient_Healthy(t *testing.T) {
+	var gotPath, gotMethod, gotAuth string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotPath, gotMethod, gotAuth = r.URL.Path, r.Method, r.Header.Get("Authorization")
+		w.Write([]byte(`{"object":"list","data":[]}`))
+	}))
+	t.Cleanup(server.Close)
+	client := &LLMClient{
+		apiURL:     server.URL + "/v1/chat/completions",
+		model:      "test-model",
+		apiKey:     "secret",
+		httpClient: server.Client(),
+	}
+
+	require.NoError(t, client.Healthy(context.Background()))
+	assert.Equal(t, "/v1/models", gotPath)
+	assert.Equal(t, http.MethodGet, gotMethod)
+	assert.Equal(t, "Bearer secret", gotAuth)
+}
+
+func TestLLMClient_HealthyUnavailable(t *testing.T) {
+	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "loading model", http.StatusServiceUnavailable)
+	}))
+
+	require.Error(t, client.Healthy(context.Background()))
+}
+
 func TestHandler_MethodNotAllowed(t *testing.T) {
-	handler := makeHandler(stubClassifier{})
+	handler := makeParseHandler(stubClassifier{})
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	handler(rec, req)

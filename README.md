@@ -11,6 +11,16 @@ non-deliveries and missing tracking numbers, and `502` if the LLM cannot be
 reached or its answer cannot be parsed. Callers must tolerate the inference
 latency (tens of seconds per email on a small CPU-hosted model).
 
+## Endpoints
+
+| Path      | Method | Description                                                                     |
+| --------- | ------ | ------------------------------------------------------------------------------- |
+| `/parse`  | POST   | CloudMailIn webhook; classifies the email as described above                    |
+| `/health` | GET    | `200 {"status":"ok"}` when the LLM API is reachable, `503` otherwise            |
+
+`/health` queries the LLM server's `/v1/models` (no inference) and is suitable
+as a Kubernetes readiness probe. Point the CloudMailIn webhook URL at `/parse`.
+
 ## Configuration
 
 | Env var       | Default                                          | Description                              |

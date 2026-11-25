@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -62,6 +63,7 @@ type DeliveryInfo struct {
 // Classifier determines whether an email is a delivery notification and extracts its details.
 type Classifier interface {
 	Classify(ctx context.Context, payload CloudMailInPayload) (*DeliveryInfo, error)
+	Healthy(ctx context.Context) error
 }
 
 // LLMClient classifies emails via an OpenAI-compatible chat completions endpoint (llama.cpp server).
@@ -179,6 +181,41 @@ func (c *LLMClient) Classify(ctx context.Context, payload CloudMailInPayload) (*
 	}
 
 	return parseDeliveryInfo(completion.Choices[0].Message.Content)
+}
+
+// Healthy reports whether the LLM API is reachable and serving, by querying
+// its models endpoint.
+func (c *LLMClient) Healthy(ctx context.Context) error {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.modelsURL(), nil)
+	if err != nil {
+		return fmt.Errorf("building health request: %w", err)
+	}
+	if c.apiKey != "" {
+		req.Header.Set("Authorization", "Bearer "+c.apiKey)
+	}
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("calling LLM API: %w", err)
+	}
+	defer resp.Body.Close()
+	io.Copy(io.Discard, io.LimitReader(resp.Body, 1<<20))
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("LLM API returned %s", resp.Status)
+	}
+	return nil
+}
+
+// modelsURL derives the models endpoint from the configured chat completions URL.
+func (c *LLMClient) modelsURL() string {
+	u, err := url.Parse(c.apiURL)
+	if err != nil {
+		return c.apiURL
+	}
+	u.Path = "/v1/models"
+	u.RawQuery = ""
+	return u.String()
 }
 
 // parseDeliveryInfo unmarshals the model output, tolerating markdown code
