@@ -20,62 +20,57 @@ type CloudMailInPayload struct {
 	Plain string `json:"plain"`
 }
 
-// DeliveryInfo holds the extracted package information.
-type DeliveryInfo struct {
-	Carrier        string `json:"carrier"`
-	TrackingNumber string `json:"tracking_number"`
-}
+// makeHandler handles incoming requests from CloudMailIn.
+func makeHandler(classifier Classifier) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Only POST method is accepted", http.StatusMethodNotAllowed)
+			return
+		}
 
-// whitespaceRegex is used to collapse consecutive whitespace characters into a single space.
+		var payload CloudMailInPayload
+		if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+			http.Error(w, "Failed to decode JSON payload", http.StatusBadRequest)
+			return
+		}
 
-// httpHandler handles incoming requests from CloudMailIn.
-func httpHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Only POST method is accepted", http.StatusMethodNotAllowed)
-		return
+		log.Printf("Received payload: %s (%s)\n", payload.Headers.Subject, payload.Headers.From)
+
+		info, err := classifier.Classify(r.Context(), payload)
+		if err != nil {
+			log.Printf("Classification failed: %v", err)
+			http.Error(w, "Classification failed", http.StatusBadGateway)
+			return
+		}
+		if !info.IsDelivered {
+			log.Println("Not a delivery")
+			http.Error(w, "Not a delivery", http.StatusBadRequest)
+			return
+		}
+		if info.TrackingNumber == "" {
+			log.Println("No tracking number found")
+			http.Error(w, "No tracking number found", http.StatusBadRequest)
+			return
+		}
+		provider := info.Carrier
+		if provider == "" {
+			provider = "Unknown"
+		}
+		log.Printf("Provider: %s, Tracking %s (evidence: %q):", provider, info.TrackingNumber, info.EvidencePhrase)
+
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(H{"tracking": info.TrackingNumber, "provider": provider})
 	}
-
-	var payload CloudMailInPayload
-	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
-		http.Error(w, "Failed to decode JSON payload", http.StatusBadRequest)
-		return
-	}
-
-	log.Printf("Received payload: %s (%s)\n", payload.Headers.Subject, payload.Headers.From)
-
-	p, err := NewPredictor(payload)
-	if err != nil {
-		log.Println("Not a delivery")
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	if !p.IsDelivery() {
-		log.Println("Not a delivery")
-		http.Error(w, "Not a delivery", http.StatusBadRequest)
-		return
-	}
-
-	t, pr := p.ExtractTracking(), p.ExtractProvider()
-	if t == "" {
-		log.Println("No tracking number found")
-		http.Error(w, "No tracking number found", http.StatusBadRequest)
-		return
-	}
-	if pr == "" {
-		pr = "Unknown"
-	}
-	log.Printf("Provider: %s, Tracking %s:", pr, t)
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(H{"tracking": t, "provider": pr})
 }
 
 func main() {
-
-	http.HandleFunc("/", httpHandler)
-
 	log.Printf("Version: %s", version)
+
+	client := NewLLMClientFromEnv()
+	log.Printf("Using LLM API at %s (model %s)", client.apiURL, client.model)
+
+	http.HandleFunc("/", makeHandler(client))
 
 	port := "8080"
 	log.Printf("Server starting on port %s", port)
