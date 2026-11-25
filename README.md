@@ -5,9 +5,10 @@ OpenAI-compatible chat completions API) to decide whether the email reports a
 package as **delivered** — shipping/dispatch/customs/out-for-delivery notices
 do not count — and to extract the tracking number and carrier.
 
-On a delivery it responds `200` with `{"tracking": "...", "provider": "..."}`;
-otherwise `400`, and `502` if the LLM cannot be reached or its answer cannot
-be parsed.
+Webhooks are acknowledged immediately with `200 {"status": "accepted"}` and
+classified in the background, because LLM inference is slower than webhook
+senders' timeouts. The verdict — delivery with carrier/tracking and evidence,
+not-a-delivery, or classification error — is written to the logs.
 
 ## Configuration
 

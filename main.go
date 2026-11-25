@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -20,7 +21,9 @@ type CloudMailInPayload struct {
 	Plain string `json:"plain"`
 }
 
-// makeHandler handles incoming requests from CloudMailIn.
+// makeHandler handles incoming requests from CloudMailIn. Payloads are
+// acknowledged immediately and classified in the background: LLM inference
+// takes far longer than webhook senders are willing to wait.
 func makeHandler(classifier Classifier) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -35,33 +38,42 @@ func makeHandler(classifier Classifier) http.HandlerFunc {
 		}
 
 		log.Printf("Received payload: %s (%s)\n", payload.Headers.Subject, payload.Headers.From)
-
-		info, err := classifier.Classify(r.Context(), payload)
-		if err != nil {
-			log.Printf("Classification failed: %v", err)
-			http.Error(w, "Classification failed", http.StatusBadGateway)
-			return
-		}
-		if !info.IsDelivered {
-			log.Println("Not a delivery")
-			http.Error(w, "Not a delivery", http.StatusBadRequest)
-			return
-		}
-		if info.TrackingNumber == "" {
-			log.Println("No tracking number found")
-			http.Error(w, "No tracking number found", http.StatusBadRequest)
-			return
-		}
-		provider := info.Carrier
-		if provider == "" {
-			provider = "Unknown"
-		}
-		log.Printf("Provider: %s, Tracking %s (evidence: %q):", provider, info.TrackingNumber, info.EvidencePhrase)
+		go classify(classifier, payload)
 
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(H{"tracking": info.TrackingNumber, "provider": provider})
+		json.NewEncoder(w).Encode(H{"status": "accepted"})
 	}
+}
+
+// classifySem bounds concurrent LLM calls; llama.cpp processes requests
+// serially, so a burst of emails would otherwise pile up unbounded.
+var classifySem = make(chan struct{}, 4)
+
+// classify runs the LLM classification detached from the request context, so
+// a caller disconnect does not abort it, and logs the verdict.
+func classify(classifier Classifier, payload CloudMailInPayload) {
+	classifySem <- struct{}{}
+	defer func() { <-classifySem }()
+
+	info, err := classifier.Classify(context.Background(), payload)
+	if err != nil {
+		log.Printf("Classification failed: %v", err)
+		return
+	}
+	if !info.IsDelivered {
+		log.Println("Not a delivery")
+		return
+	}
+	if info.TrackingNumber == "" {
+		log.Println("No tracking number found")
+		return
+	}
+	provider := info.Carrier
+	if provider == "" {
+		provider = "Unknown"
+	}
+	log.Printf("Provider: %s, Tracking %s (evidence: %q):", provider, info.TrackingNumber, info.EvidencePhrase)
 }
 
 func main() {
