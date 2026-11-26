@@ -22,8 +22,10 @@ type CloudMailInPayload struct {
 	HTML string `json:"html"`
 }
 
+// ParseRequest is the envelope wrapping the CloudMailIn payload as a nested
+// JSON object.
 type ParseRequest struct {
-	Payload string `json:"payload"`
+	Payload CloudMailInPayload `json:"payload"`
 }
 
 // makeParseHandler handles incoming mail payloads from CloudMailIn. It
@@ -38,15 +40,10 @@ func makeParseHandler(classifier Classifier) http.HandlerFunc {
 
 		var req ParseRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			http.Error(w, "Failed to decode JSON request", http.StatusBadRequest)
-			return
-		}
-
-		var payload CloudMailInPayload
-		if err := json.Unmarshal([]byte(req.Payload), &payload); err != nil {
 			http.Error(w, "Failed to decode JSON payload", http.StatusBadRequest)
 			return
 		}
+		payload := req.Payload
 
 		if payload.Headers.From == "" && payload.Headers.Subject == "" && payload.HTML == "" {
 			log.Printf("Rejecting empty payload from %s, UA %q", clientIP(r), r.UserAgent())

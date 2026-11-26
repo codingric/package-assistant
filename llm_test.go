@@ -183,7 +183,7 @@ func (s stubClassifier) Healthy(_ context.Context) error {
 
 func postPayload(t *testing.T, handler http.HandlerFunc) *httptest.ResponseRecorder {
 	t.Helper()
-	body, _ := json.Marshal(samplePayload())
+	body, _ := json.Marshal(ParseRequest{Payload: samplePayload()})
 	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(string(body)))
 	rec := httptest.NewRecorder()
 	handler(rec, req)
