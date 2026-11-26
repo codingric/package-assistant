@@ -19,8 +19,11 @@ type CloudMailInPayload struct {
 		From    string `json:"from"`
 		Subject string `json:"subject"`
 	} `json:"headers"`
-	HTML  string `json:"html"`
-	Plain string `json:"plain"`
+	HTML string `json:"html"`
+}
+
+type ParseRequest struct {
+	Payload string `json:"payload"`
 }
 
 // makeParseHandler handles incoming mail payloads from CloudMailIn. It
@@ -33,13 +36,19 @@ func makeParseHandler(classifier Classifier) http.HandlerFunc {
 			return
 		}
 
+		var req ParseRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "Failed to decode JSON request", http.StatusBadRequest)
+			return
+		}
+
 		var payload CloudMailInPayload
-		if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		if err := json.Unmarshal([]byte(req.Payload), &payload); err != nil {
 			http.Error(w, "Failed to decode JSON payload", http.StatusBadRequest)
 			return
 		}
 
-		if payload.Headers.From == "" && payload.Headers.Subject == "" && payload.HTML == "" && payload.Plain == "" {
+		if payload.Headers.From == "" && payload.Headers.Subject == "" && payload.HTML == "" {
 			log.Printf("Rejecting empty payload from %s, UA %q", clientIP(r), r.UserAgent())
 			http.Error(w, "Empty payload", http.StatusBadRequest)
 			return

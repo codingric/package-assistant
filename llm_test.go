@@ -43,6 +43,28 @@ func samplePayload() CloudMailInPayload {
 	return p
 }
 
+func TestCleanBody_StripsLinksImagesAndNonASCII(t *testing.T) {
+	p := CloudMailInPayload{}
+	p.HTML = `<html><body>` +
+		`<p>Hi 📦 Ricardo,</p>` +
+		`<img src="https://tracker.example.com/pixel.gif" alt="">` +
+		`<p>Your package <a href="https://track.example.com/ABC123?utm=long">3781053936972</a> ` +
+		`was delivered. Track at https://track.example.com/ABC123</p>` +
+		`</body></html>`
+
+	clean := cleanBody(p)
+
+	assert.Contains(t, clean, "3781053936972")
+	assert.Contains(t, clean, "was delivered")
+	assert.NotContains(t, clean, "<")
+	assert.NotContains(t, clean, "http")
+	assert.NotContains(t, clean, "pixel.gif")
+	assert.NotContains(t, clean, "📦")
+	for _, r := range clean {
+		assert.Less(t, r, rune(127), "non-ASCII rune %q left in body", r)
+	}
+}
+
 func TestLLMClient_ClassifyDelivery(t *testing.T) {
 	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"has been successfully delivered","carrier":"AliExpress","tracking_number":"3781053936972"}`)))

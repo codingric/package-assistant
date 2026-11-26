@@ -245,16 +245,28 @@ func parseDeliveryInfo(content string) (*DeliveryInfo, error) {
 	return &info, nil
 }
 
-var whitespaceRegex = regexp.MustCompile(`\s+`)
+var (
+	whitespaceRegex = regexp.MustCompile(`\s+`)
+	imgTagRegex     = regexp.MustCompile(`(?i)<img\b[^>]*>`)
+	anchorTagRegex  = regexp.MustCompile(`(?i)</?a\b[^>]*>`)
+	urlRegex        = regexp.MustCompile(`(?i)(https?://|www\.)\S+`)
+)
 
-// cleanBody strips HTML tags and collapses whitespace to keep the prompt small.
+// cleanBody strips HTML tags, images, links and non-ASCII characters, then
+// collapses whitespace to keep the prompt small and reduce token usage.
 func cleanBody(payload CloudMailInPayload) string {
 	text := payload.HTML
-	if strings.TrimSpace(text) == "" {
-		text = payload.Plain
-	}
+	text = imgTagRegex.ReplaceAllString(text, " ")
+	text = anchorTagRegex.ReplaceAllString(text, " ")
 	sanitized := bluemonday.StrictPolicy().Sanitize(text)
-	clean := strings.TrimSpace(whitespaceRegex.ReplaceAllString(sanitized, " "))
+	sanitized = urlRegex.ReplaceAllString(sanitized, " ")
+	ascii := strings.Map(func(r rune) rune {
+		if r >= 32 && r <= 126 {
+			return r
+		}
+		return -1
+	}, sanitized)
+	clean := strings.TrimSpace(whitespaceRegex.ReplaceAllString(ascii, " "))
 	if runes := []rune(clean); len(runes) > maxBodyChars {
 		clean = string(runes[:maxBodyChars])
 	}
