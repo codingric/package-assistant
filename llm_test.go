@@ -183,7 +183,7 @@ func (s stubClassifier) Healthy(_ context.Context) error {
 
 func postPayload(t *testing.T, handler http.HandlerFunc) *httptest.ResponseRecorder {
 	t.Helper()
-	body, _ := json.Marshal(ParseRequest{Payload: samplePayload()})
+	body, _ := json.Marshal(samplePayload())
 	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(string(body)))
 	rec := httptest.NewRecorder()
 	handler(rec, req)
@@ -204,6 +204,22 @@ func TestHandler_Delivery(t *testing.T) {
 	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &resp))
 	assert.Equal(t, "3781053936972", resp["tracking"])
 	assert.Equal(t, "AliExpress", resp["provider"])
+}
+
+func TestHandler_WrappedPayload(t *testing.T) {
+	handler := makeParseHandler(stubClassifier{info: &DeliveryInfo{
+		IsDelivered:    true,
+		Carrier:        "AliExpress",
+		TrackingNumber: "3781053936972",
+	}})
+
+	body, _ := json.Marshal(ParseRequest{Payload: samplePayload()})
+	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(string(body)))
+	rec := httptest.NewRecorder()
+	handler(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.Contains(t, rec.Body.String(), `"tracking":"3781053936972"`)
 }
 
 func TestHandler_UnknownProvider(t *testing.T) {

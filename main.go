@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -22,10 +23,14 @@ type CloudMailInPayload struct {
 	HTML string `json:"html"`
 }
 
-// ParseRequest is the envelope wrapping the CloudMailIn payload as a nested
-// JSON object.
+// ParseRequest is an optional envelope wrapping the CloudMailIn payload as a
+// nested JSON object; the raw payload may also be posted directly.
 type ParseRequest struct {
 	Payload CloudMailInPayload `json:"payload"`
+}
+
+func (p CloudMailInPayload) isEmpty() bool {
+	return p.Headers.From == "" && p.Headers.Subject == "" && p.HTML == ""
 }
 
 // makeParseHandler handles incoming mail payloads from CloudMailIn. It
@@ -38,14 +43,27 @@ func makeParseHandler(classifier Classifier) http.HandlerFunc {
 			return
 		}
 
-		var req ParseRequest
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Failed to read request body", http.StatusBadRequest)
+			return
+		}
+
+		// Home Assistant's rest_command posts the raw CloudMailIn JSON;
+		// other callers may wrap it in a "payload" object.
+		var payload CloudMailInPayload
+		if err := json.Unmarshal(body, &payload); err != nil {
 			http.Error(w, "Failed to decode JSON payload", http.StatusBadRequest)
 			return
 		}
-		payload := req.Payload
+		if payload.isEmpty() {
+			var req ParseRequest
+			if err := json.Unmarshal(body, &req); err == nil {
+				payload = req.Payload
+			}
+		}
 
-		if payload.Headers.From == "" && payload.Headers.Subject == "" && payload.HTML == "" {
+		if payload.isEmpty() {
 			log.Printf("Rejecting empty payload from %s, UA %q", clientIP(r), r.UserAgent())
 			http.Error(w, "Empty payload", http.StatusBadRequest)
 			return
