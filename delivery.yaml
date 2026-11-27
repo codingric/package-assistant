@@ -1,0 +1,637 @@
+payload: >-
+  {"attachments": [], "envelope": {"from": "ricardo@salinas.id.au",
+  "helo_domain": "mail-oo1-f52.google.com", "md5":
+  "c21725a5fb03c7493709e3cef3612148", "recipients":
+  ["d2e8e15cf15223da7cb8@cloudmailin.net"], "remote_ip": "209.85.161.52",
+  "size": "48834", "spf": {"domain": "salinas.id.au", "result": "none"},
+  "tls": true, "tls_cipher": "TLSv1.3", "to":
+  "d2e8e15cf15223da7cb8@cloudmailin.net"}, "headers":
+  {"arc_authentication_results": "i=1; mx.google.com; arc=none",
+  "arc_message_signature": "i=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=google.com; s=arc-20260327;       
+  h=to:subject:message-id:date:from:in-reply-to:references:mime-version        
+  :dkim-signature;       
+  bh=0ldOvzSvA6Nf93ucz14cW9ySgwPPevSOr1T4HERDsp4=;       
+  fh=puwSe99yaRtV32/6jrIIb/4T6vrmzmoTQHxDXp7vBI0=;       
+  b=LS+AwWiDx29QUuXTqgayg6heu0ANT/fC5DGZdEaP5fVlWcnFF4LNK4tDAxIdnFaM/e        
+  YA4w5dpX2rRC4/Yrd1wMfHkPpUDOLo3GddnMQWi7/RYOyXSqBFChcmUfNyZzKECL5XYA        
+  dqhAShZoRN7axPvR5j29+SX0uG1jbvHQfbsJY+eZPeatuoOTaWUK5aEqatO9TRGwhBPy        
+  i5iALP0AjSVNxLD05CiSLLT+RGMA2Z7/HSvcIIbKk2wXPuN2poFyw42v6teMIzUqPOhT        
+  qswYzPdt+RT9t2ztOcE2sY4ZiuSAvOkUunt2HZrOgatRBLAnhvUa8dPB6arTlC5Weyvv        
+  bp0A==;        darn=cloudmailin.net", "arc_seal": "i=1; a=rsa-sha256;
+  t=1795651080; cv=none;        d=google.com; s=arc-20260327;       
+  b=PVTqTrzPft4O4oDuj/nhl5hF9sseYkr2QZTUGtI8yK6YUFauSdMXQuqhA0/fhDAi8H        
+  Ct0N9QsZR67tPgXn7/I1WAWMy2Tc62NqsQtuJD0xQSPeZeVHvFOXpqcOpGUJxiWCfceC        
+  SXzVoFriu8xkjbQBM2leGrh2kdjjnxognAfRqoUjCOTi8355VaRZYcZXSVjpuH6wJ8z7        
+  1mstflH2IyO1SbosvzFBdGUevRwr1vwWgo+BTh/Kgxukdhh1poof8NXWqGMXPdogftBt        
+  KYo71HFm0gwn88bB92IIbwP1GmGWTTSVxXxV3ADI1l0ixOGqaBksrE/PuAhAFZ1Zq44R        
+  O5FQ==", "content_type": "multipart/alternative;
+  boundary=000000000000bf231106612298cf", "date": "Thu, 26 Nov 2026 10:57:48
+  +1100", "dkim_signature": "v=1; a=rsa-sha256; c=relaxed/relaxed;       
+  d=salinas-id-au.20260707.gappssmtp.com; s=20260707; t=1795651080;
+  x=1796255880; darn=cloudmailin.net;       
+  h=content-type:to:subject:message-id:date:from:in-reply-to:references        
+  :mime-version:from:to:cc:subject:date:message-id:reply-to        
+  :content-type;       
+  bh=0ldOvzSvA6Nf93ucz14cW9ySgwPPevSOr1T4HERDsp4=;       
+  b=JHC1siECbW/ZBOLy+CerdJG68hlq54IrNGBHVF8y9+IiYJBvGIQuL5ae0bkW9rdJl4        
+  GjIjkKrJwL4ymeBUTjOr8LWGFGqa+TEkN+/ds1Y4n69rmmpi71fd9e2mALTTCJkLHC2P        
+  Su7vNgBc9I97KrewvLgpOREEO9lXW1TA8fq74xNGPAFYkGXUXnF38Vg6Fhgg9uk+LNTW        
+  hhoSuVRTz8p/7GfnHiUU0+u5Je/pl7pP6avjfH9f2qwequbhw/YW1yY2tSvkNUt+vKke        
+  mzg2uKhrQjvShej4gAWgrA1jOozysxd3AStu5ut2MR3OmmdGw1rshunZwfcdAsKKvvXB        
+  8JQw==", "from": "Ricardo Salinas \u003cricardo@salinas.id.au\u003e",
+  "in_reply_to":
+  "\u003c010101a1e1a678a0-ba27858a-8bd0-47d9-9a3b-2309a881da5e-000000@us-west-2.amazonses.com\u003e",
+  "message_id":
+  "\u003cCA+qqRR2hg5Yk-w4NvLW9e3ZTGaLV0GpSnFRoNZge7s3BgjnfUA@mail.gmail.com\u003e",
+  "mime_version": "1.0", "received": "by mail-oo1-f52.google.com with SMTP
+  id 006d021491bc7-6de2f213b7aso2752711eaf.0        for
+  \u003cd2e8e15cf15223da7cb8@cloudmailin.net\u003e; Wed, 25 Nov 2026
+  15:58:00 -0800", "references":
+  "\u003c010101a1e1a678a0-ba27858a-8bd0-47d9-9a3b-2309a881da5e-000000@us-west-2.amazonses.com\u003e",
+  "subject": "Fwd: Delivered: \u2018Swanson Full Spectrum...\u2019", "to":
+  "d2e8e15cf15223da7cb8@cloudmailin.net", "x_gm_features":
+  "Aa3M54ruWeX9dz_r0MajkOYTU7h6oajUdFQtzrt7wW8T-KKa006opJvd4hp1UQc",
+  "x_gm_gg":
+  "AZFdTZeqDuDkKZU6D7VWLrJhkZw0gvxp+vNLvkxN9pcgK9bg0cZqlT8dV7RfhRSNAE+\tFWVw1khsx4TWq8liemdetEDCVYEbFwcl+TwbijJg1AWH4IuR+TDh6IoSstqcwZOX14zzD4KCWk7\tCFPmivfofAUyEYys6GxmFl23Ksfnk11CZRnUdijvsNzNLotyI7Zbm9K290Ys2x8jD9NO2+uiru1\t8OYj/d9dGi7QxmmftH6Skw+8y4lb3/qkudxEC2rcr3UTXrMZFfNldvSEGbRuQpitE9ocbYgPlOo\tPQuTmFqS30dRpTnxRGH5O9eHGePg7rp152ippkUoHQPxTzi5WSKsgs+WcqOhtBiqkJu7XPjDGYU\twP4esuyeUZvR38UFNyi8jXbIxCKi5Yk+16pqH3/3OB+yHi0QsyCRD/+h6ubfnaE1rCwo=",
+  "x_gm_message_state":
+  "APuU4Z99RXKNOKzqJl8niUACrR/kZN9rvqrVpwE1wFS6fNStQXseLB3i\tKU1RIXkL8rQL7vMKtaXioklpuMZ9jmFljpks4n8x2Pa0Zon1jEUIgyWmCCMeSl9pAQheQmoUElk\tUlg62rfqDA8ChMnYzZW+d+8Ps2tVbMyoVgLY+QGuhllH3w+t/m2/FVl8=",
+  "x_google_dkim_signature": "v=1; a=rsa-sha256; c=relaxed/relaxed;       
+  d=1e100.net; s=20260707; t=1795651080; x=1796255880;       
+  h=content-type:to:subject:message-id:date:from:in-reply-to:references        
+  :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date        
+  :message-id:reply-to:content-type;       
+  bh=0ldOvzSvA6Nf93ucz14cW9ySgwPPevSOr1T4HERDsp4=;       
+  b=MfkEia080LI9lKd5ifxLA1wpwkX3VW1NKpU6W6aiqPp4hTTfjnLZRjt2x75kPXTDss        
+  ceLo+HqxH3zL/oXU6u7oAD2zbpeC2eRwWeILeLAt/+cH7H283rzeNLYwdxuzQS21ZADC        
+  ZhkKa2EjRDC5QG3yABzja3J46/q4N7Czq9nCFi9lrgvfWSimKk4bCeagRMlM5i7s+Ugo        
+  FKSZM1NJSfq5/lk6p6+8w6Hnt7P/Vbobmisin3A4mVH+GLNwjKRYM4dBVoRwfwuMLppA        
+  G6ZABML4JAlv8BuYyVQkPDZX89ViOgcvQRbT5tgJeRNg2nz5Sg1jdi6pqIT4Nti9iYYT        
+  ULoQ==", "x_received": "by 2002:a05:6820:809:b0:71b:40c:9d86 with SMTP id
+  006d021491bc7-71b394b3c12mr13838380eaf.44.1795651079704; Wed, 25 Nov 2026
+  15:57:59 -0800 (PST)"}, "html": "\u003cdiv
+  dir=\"ltr\"\u003e\u003cbr\u003e\u003cbr\u003e\u003cdiv class=\"gmail_quote
+  gmail_quote_container\"\u003e\u003cdiv dir=\"ltr\"
+  class=\"gmail_attr\"\u003e---------- Forwarded message
+  ---------\u003cbr\u003eFrom: \u003cstrong class=\"gmail_sendername\"
+  dir=\"auto\"\u003e\u003ca
+  href=\"http://Amazon.com.au\"\u003eAmazon.com.au\u003c/a\u003e\u003c/strong\u003e
+  \u003cspan dir=\"auto\"\u003e\u0026lt;\u003ca
+  href=\"mailto:order-update@amazon.com.au\"\u003eorder-update@amazon.com.au\u003c/a\u003e\u0026gt;\u003c/span\u003e\u003cbr\u003eDate:
+  Mon, 16 Nov 2026 at 10:59\u003cbr\u003eSubject: Delivered: \u2018Swanson
+  Full Spectrum...\u2019\u003cbr\u003eTo:  \u0026lt;\u003ca
+  href=\"mailto:ricardo@salinas.id.au\"\u003ericardo@salinas.id.au\u003c/a\u003e\u0026gt;\u003cbr\u003e\u003c/div\u003e\u003cbr\u003e\u003cbr\u003e\u003cdiv
+  class=\"msg8024665712786789110\"\u003e\u003cu\u003e\u003c/u\u003e\u003cdiv
+  style=\"word-spacing:normal\"\u003e\u003cimg width=\"1\" height=\"1\"
+  src=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=GQU5DM8CCUSI\u0026amp;T=O\u0026amp;U=https%3A%2F%2Fimages-fe.ssl-images-amazon.com%2Fimages%2FG%2F01%2Fnav%2Ftransp.gif\u0026amp;H=J2Y9WBREGQ9B4EWDSAUMOG5NF8SA\u0026amp;ref_=pe_78387282_645496422_opens\"
+  alt=\"\"\u003e\u003cdiv
+  style=\"display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden\"\u003eDelivered:
+  \u2018Swanson Full Spectrum...\u2019\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u034f \u200c \u00a0 \u2007
+  \u00ad\u034f \u200c \u00a0 \u2007 \u00ad\u003c/div\u003e\u003cdiv
+  lang=\"en\" dir=\"auto\"\u003e \u003cdiv
+  style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;max-width:600px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0px 0px 4px
+  0px;text-align:left\"\u003e                                                                         
+  \u003ctable cellpadding=\"0\" cellspacing=\"0\" border=\"0\"
+  role=\"presentation\" width=\"100%\" bgcolor=\"#FFFFFF\"
+  style=\"width:100%\"\u003e \u003ctbody\u003e\u003ctr\u003e\u003ctd
+  colspan=\"2\" height=\"1\" aria-hidden=\"true\"
+  style=\"height:1px;font-size:1px;line-height:1px;background-color:#d5d9d9\"\u003e\u200a\u003c/td\u003e\u003c/tr\u003e
+  \u003ctr\u003e\u003ctd style=\"padding-left:0px\"\u003e   \u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=2XFLA1Z194SL0\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fref%3Dpe_78387282_645496422_TNL_00_00_IMG_00_nav_logo\u0026amp;H=AW3F4SPLKO68DA8HAR1NTSWEN8KA\u0026amp;ref_=pe_78387282_645496422_TNL_00_00_IMG_00_nav_logo\"
+  target=\"_blank\"\u003e\u003cimg
+  src=\"https://m.media-amazon.com/images/G/01/outbound/OutboundTemplates/Amazon_logo_US._BG255,255,255_.png\"
+  height=\"36\"
+  style=\"height:36px;border:0;display:block;max-height:36px;background-color:#ffffff\"
+  alt=\"Amazon logo\"\u003e \u003cimg
+  src=\"https://m.media-amazon.com/images/G/01/outbound/OutboundTemplates/Amazon_logo_whiterev_US.png\"
+  height=\"36\" style=\"height:36px;display:none;border:0;max-height:36px\"
+  alt=\"Amazon logo\"\u003e \u003c/a\u003e\u003c/td\u003e\u003ctd
+  align=\"right\" style=\"width:100%\"\u003e\u003ctable cellpadding=\"0\"
+  cellspacing=\"0\" border=\"0\"
+  role=\"list\"\u003e\u003ctbody\u003e\u003ctr\u003e \u003ctd
+  style=\"padding-top:10px;padding-bottom:10px;padding-right:12px\"
+  role=\"listitem\"\u003e\u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=3TEC14IYIAN5D\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fgp%2Fcss%2Forder-history%3Fref_%3Dpe_78387282_645496422_TNL_00_01_BT_00_fed_yo_default\u0026amp;H=23OKNAJKS3MWHSZYGYJKJZC8PAWA\u0026amp;ref_=pe_78387282_645496422_TNL_00_01_BT_00_fed_yo_default\"
+  style=\"text-decoration:none!important;font-size:15px!important;font-weight:bold!important;white-space:nowrap;font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;color:#0f1111\"
+  target=\"_blank\"\u003e\u003cstrong\u003eYour
+  Orders\u003c/strong\u003e\u003c/a\u003e\u003c/td\u003e  \u003ctd
+  style=\"padding-top:10px;padding-bottom:10px;padding-right:12px\"
+  role=\"listitem\"\u003e\u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=3OZC4BFQSKMUE\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fyour-account%3Fref_%3Dpe_78387282_645496422_TNL_00_02_BT_00_fed_ya_default\u0026amp;H=UDZWBMYXZNVKJUG9AYHCXKFXBTUA\u0026amp;ref_=pe_78387282_645496422_TNL_00_02_BT_00_fed_ya_default\"
+  style=\"text-decoration:none!important;font-size:15px!important;font-weight:bold!important;white-space:nowrap;font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;color:#0f1111\"
+  target=\"_blank\"\u003e\u003cstrong\u003eYour
+  Account\u003c/strong\u003e\u003c/a\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e
+  \u003ctr\u003e\u003ctd colspan=\"2\" height=\"1\" aria-hidden=\"true\"
+  style=\"height:1px;font-size:1px;line-height:1px;background-color:#d5d9d9\"\u003e\u200a\u003c/td\u003e\u003c/tr\u003e
+  \u003c/tbody\u003e\u003c/table\u003e    
+  \u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e
+  \u003cdiv style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;max-width:600px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:4px 8px 4px
+  8px;text-align:left\"\u003e           \u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"border-collapse:collapse;border-spacing:0px\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"width:584px\"\u003e\u003cimg alt=\"Header for shipment tracker\"
+  src=\"https://m.media-amazon.com/images/G/01/NoASIN-Branded-Illustrations/T2_Delivered_Animated.gif\"
+  style=\"border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:15px\"
+  width=\"584\"
+  height=\"auto\"\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003cdiv
+  style=\"height:4px;line-height:4px\"\u003e\u200a\u003c/div\u003e\u003cdiv
+  style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;border-radius:4px;max-width:584px\"\u003e\u003ctable align=\"center\"
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%;border-radius:4px\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:4px 8px 4px
+  8px;text-align:left\"\u003e  \u003cdiv style=\"margin:0px
+  auto;max-width:568px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;font-size:15px;line-height:1;text-align:center;color:#000000\"\u003e\u003ch2
+  style=\"margin:0;padding:0;font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;font-weight:700;font-size:18px;line-height:22px;color:#0f1111\"\u003e\u003cdiv
+  style=\"padding-bottom:0px\"\u003eYour package was
+  delivered!\u003c/div\u003e\u003c/h2\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e  
+  \u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e 
+  \u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e
+  \u003cdiv style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;max-width:600px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:4px 8px 4px
+  8px;text-align:left\"\u003e\u003cdiv style=\"margin:0px
+  auto;border-radius:4px;max-width:584px\"\u003e\u003ctable align=\"center\"
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"width:100%;border-radius:4px\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0px 8px 0px
+  8px;text-align:left\"\u003e\u003cp style=\"border-top:solid 1px
+  #bbbfbf;font-size:1px;margin:0px
+  auto;width:100%\"\u003e\u003c/p\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e
+  \u003cdiv style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;max-width:600px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:4px 8px 4px
+  8px;text-align:left\"\u003e \u003cdiv
+  style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;border-radius:4px;max-width:584px\"\u003e\u003ctable align=\"center\"
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%;border-radius:4px\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:4px 8px 4px
+  8px;text-align:left\"\u003e         \u003cdiv style=\"margin:0px
+  auto;max-width:568px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0\"\u003e\u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"margin:0px auto;max-width:568px\"\u003e\u003ctable
+  align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0\"\u003e\u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;font-size:18px;font-weight:700;line-height:22px;text-align:left;color:#0f1111\"\u003e\u003cspan\u003eDelivered
+  today\u003c/span\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;font-size:15px;font-weight:400;line-height:21px;text-align:left;color:#0f1111\"\u003e\u003cspan\u003eYour
+  package was left near the front door or
+  porch.\u003c/span\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  aria-hidden=\"true\"
+  style=\"height:12px;line-height:12px\"\u003e\u00a0\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;font-size:15px;font-weight:400;line-height:21px;text-align:left;color:#0f1111\"\u003e\u003cspan\u003e\u003cb\u003eRicardo
+  \u2013 PARKDALE,
+  VIC\u003c/b\u003e\u003c/span\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;font-size:15px;font-weight:400;line-height:21px;text-align:left;color:#0f1111\"\u003e\u003cspan\u003e\u003cspan\u003eOrder
+  #\u003c/span\u003e
+  \u003cspan\u003e\u202b250-8056838-5231034\u003c/span\u003e\u003c/span\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"margin:0px auto;max-width:568px\"\u003e\u003ctable
+  align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0\"\u003e\u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd\u003e\u003cu\u003e\u003c/u\u003e 
+  \u003cu\u003e\u003c/u\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  aria-hidden=\"true\"
+  style=\"height:12px;line-height:12px\"\u003e\u00a0\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003ctable
+  cellpadding=\"0\" cellspacing=\"0\" border=\"0\"
+  role=\"presentation\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"text-align:center;border-radius:24px;background:#ffd916\"\u003e\u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=2UOD6BAXK24UY\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fprogress-tracker%2Fpackage%3F_encoding%3DUTF8%26orderId%3D250-8056838-5231034%26packageIndex%3D0%26shipmentId%3DUYJ05xlCH%26vt%3DNOTIFICATIONS%26ref_%3Dpe_78387282_645496422_p_btn_fed_track_package\u0026amp;H=ZHTSMHJCVYCYOGSU2TVS7ZSYVTCA\u0026amp;ref_=pe_78387282_645496422_p_btn_fed_track_package\"
+  style=\"border:1px solid
+  #fcd200;background:#ffd916;font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;color:#0f1111;text-decoration:none;border-radius:24px;padding:6px
+  16px;display:inline-block;font-size:13px;line-height:18px;white-space:nowrap\"
+  target=\"_blank\"\u003e\u003cspan
+  style=\"text-decoration:none\"\u003eTrack
+  package\u003c/span\u003e\u003c/a\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  aria-hidden=\"true\"
+  style=\"height:12px;line-height:12px\"\u003e\u00a0\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e 
+  \u003ctr\u003e\u003ctd\u003e\u003cu\u003e\u003c/u\u003e 
+  \u003cu\u003e\u003c/u\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003ctable
+  style=\"width:100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"text-align:center\"\u003e\u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=3FC5USKM6GXAC\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fprogress-tracker%2Fpackage%3F_encoding%3DUTF8%26orderId%3D250-8056838-5231034%26packageIndex%3D0%26shipmentId%3DUYJ05xlCH%26vt%3DNOTIFICATIONS%26ref_%3Dpe_78387282_645496422_pod_fed_track_package\u0026amp;H=GSC7HQGFYKCHNGAQXDLTI1NV7B8A\u0026amp;ref_=pe_78387282_645496422_pod_fed_track_package\"
+  target=\"_blank\"\u003e \u003cimg
+  style=\"max-width:100%;margin:auto;display:block;border-radius:4px\"
+  src=\"https://jp-prod-temp.s3.us-west-2.amazonaws.com/imageId-24d0f0d2-e271-8668-c034-48639bf1f78e?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026amp;X-Amz-Date=20261115T235905Z\u0026amp;X-Amz-SignedHeaders=host\u0026amp;X-Amz-Credential=AKIA2OE7AJRVSLZ4Q3Q4%2F20261115%2Fus-west-2%2Fs3%2Faws4_request\u0026amp;X-Amz-Expires=259200\u0026amp;X-Amz-Signature=4984df3b92cbdcfa46005377370e2fc54fd9a07a51842b4a9de7d0fd6764e892\"
+  alt=\"\"\u003e\u003c/a\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e 
+  \u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  aria-hidden=\"true\"
+  style=\"height:12px;line-height:12px\"\u003e\u00a0\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"margin:0px auto;max-width:568px\"\u003e\u003ctable
+  align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0;line-height:0;text-align:left;display:inline-block;width:100%;direction:ltr\"\u003e  
+  \u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:24.65753424657534%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0;padding-right:8px\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0;padding-right:0;padding-left:0\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e        
+  \u003ctr\u003e\u003ctd\u003e\u003cu\u003e\u003c/u\u003e 
+  \u003cu\u003e\u003c/u\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003ctable
+  style=\"width:100%;border-radius:4px\" border=\"0\" cellpadding=\"0\"
+  cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"background-image:linear-gradient(rgba(15,17,17,0.03),rgba(15,17,17,0.03));border-radius:4px;width:100%;height:64px;vertical-align:middle;text-align:center;padding:8px\"\u003e\u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=3LGLD11U10USJ\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fdp%2FB07F92W8RM%3Fref_%3Dpe_78387282_645496422_i_fed_asin_title\u0026amp;H=Z48IAWRYSZDO89COAM71HYPPMF8A\u0026amp;ref_=pe_78387282_645496422_i_fed_asin_title\"
+  style=\"background-color:transparent;display:inline-block\"
+  target=\"_blank\"\u003e\u003cimg
+  style=\"width:100%;height:auto;max-height:64px;max-width:64px;margin:auto;display:block\"
+  width=\"120\"
+  src=\"https://m.media-amazon.com/images/I/51AObLv7uUL._SS90_.jpg\"
+  alt=\"Swanson Full Spectrum Saffron 15mg, 60
+  Capsules\"\u003e\u003c/a\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e 
+  \u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  aria-hidden=\"true\"
+  style=\"height:12px;line-height:12px\"\u003e\u00a0\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"margin:0px auto;max-width:568px\"\u003e\u003ctable
+  align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0\"\u003e\u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  aria-hidden=\"true\"
+  style=\"height:12px;line-height:12px\"\u003e\u00a0\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"margin:0px auto;max-width:568px\"\u003e\u003ctable
+  align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0\"\u003e\u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003ctable
+  style=\"width:100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"
+  role=\"presentation\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"border-radius:8px;background-color:#f0f2f2;padding:12px
+  8px;display:flex\"\u003e\u003ctable
+  role=\"presentation\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"padding-right:8px\"\u003e\u003cimg
+  src=\"https://m.media-amazon.com/images/G/01/Sonar/infoIcon.png\"
+  alt=\"info icon\" width=\"18\" height=\"18\"\u003e\u003c/td\u003e\u003ctd
+  style=\"font-weight:400;font-size:15px;line-height:20px;color:#000000\"\u003eTell
+  us how we did! \u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=2A7WD0K0QRCUE\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fdeliveryfeedback%3Fdplnk%3DY%26orderId%3D250-8056838-5231034%26shipmentId%3DUYJ05xlCH%26ref_%3Dpe_78387282_645496422_tnp_email_del_fdbk\u0026amp;H=ZYLMXBTBC0OC3BTHCPO8A6I32AIA\u0026amp;ref_=pe_78387282_645496422_tnp_email_del_fdbk\"
+  target=\"_blank\"\u003eRate your
+  delivery\u003c/a\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"margin:0px auto;max-width:568px\"\u003e\u003ctable
+  align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0\"\u003e\u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  aria-hidden=\"true\"
+  style=\"height:12px;line-height:12px\"\u003e\u00a0\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd
+  align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003cdiv
+  style=\"margin:0px auto;max-width:568px\"\u003e\u003ctable
+  align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:0;text-align:left\"\u003e\u003cdiv
+  style=\"font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%\"\u003e\u003ctable
+  border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"vertical-align:top;padding:0\"\u003e\u003ctable border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  width=\"100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd align=\"left\"
+  style=\"font-size:0px;padding:0;word-break:break-word\"\u003e\u003ctable
+  style=\"width:100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"
+  role=\"presentation\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"border-radius:8px;background-color:#f0f2f2;padding:12px
+  8px;display:flex\"\u003e\u003ctable
+  role=\"presentation\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"padding-right:8px\"\u003e\u003cimg
+  src=\"https://m.media-amazon.com/images/G/01/Sonar/infoIcon.png\"
+  alt=\"info icon\" width=\"18\" height=\"18\"\u003e\u003c/td\u003e\u003ctd
+  style=\"font-weight:400;font-size:15px;line-height:20px;color:#000000\"\u003eReturn
+  or replace items in \u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=2XMMU97892M40\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fyour-orders%2Forders%3Fref_%3Dpe_78387282_645496422_pdc_yo\u0026amp;H=5ZZLLXFODW0KEODSCAJKU8GKJSMA\u0026amp;ref_=pe_78387282_645496422_pdc_yo\"
+  target=\"_blank\"\u003eYour
+  Orders\u003c/a\u003e.\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e
+  \u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e 
+  \u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e
+  \u003cdiv style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;max-width:600px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:4px 8px 4px
+  8px;text-align:left\"\u003e       
+  \u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e
+  \u003cdiv style=\"background:#ffffff;background-color:#ffffff;margin:0px
+  auto;max-width:600px\"\u003e\u003ctable align=\"center\" border=\"0\"
+  cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"
+  style=\"background:#ffffff;background-color:#ffffff;width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"direction:ltr;font-size:0px;padding:4px 0px 0px
+  0px;text-align:left\"\u003e \u003ctable width=\"100%\" cellspacing=\"0\"
+  cellpadding=\"0\" border=\"0\" role=\"presentation\"
+  style=\"background-color:#f0f2f2;width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  width=\"100%\" align=\"left\"
+  style=\"width:100%;padding-bottom:4px;text-align:left\"\u003e\u003ctable
+  width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"
+  role=\"presentation\"
+  style=\"width:100%\"\u003e\u003ctbody\u003e\u003ctr\u003e\u003ctd
+  style=\"width:100%;padding:0 16px 16px
+  16px;font-family:Ember,\u0026#39;Amazon
+  Ember\u0026#39;,Arial,sans-serif;font-size:14px;line-height:20px;color:#494d4d\"\u003e\u003cdiv
+  style=\"margin-top:20px\"\u003eYou are receiving this service email based
+  on a recent purchase or to provide information related to your Amazon
+  Australia account.\u003cbr\u003e\u00a9 2026 Amazon.com, Inc. or its
+  affiliates. All rights reserved. Amazon, Amazon.com, \u003ca
+  href=\"http://Amazon.com.au\"
+  target=\"_blank\"\u003eAmazon.com.au\u003c/a\u003e, the \u003ca
+  href=\"http://Amazon.com.au\"
+  target=\"_blank\"\u003eAmazon.com.au\u003c/a\u003e logo and 1-click are
+  registered trademarks of Amazon.com, Inc. or its affiliates. This message
+  is produced and distributed by Amazon Commercial Services Pty Ltd (ABN 30
+  616 935 623) or its affiliates.\u003c/div\u003e \u003cdiv
+  style=\"margin-top:20px\"\u003e  \u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=2EX7GMLI7T6G5\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%2Fgp%2Fhelp%2Fcustomer%2Fdisplay.html%3FnodeId%3D468496%26ref_%3Dpe_78387282_645496422_TF_05_03_LNK_08\u0026amp;H=T87NC3RUEUAGAAWQLYBQUZCHCWGA\u0026amp;ref_=pe_78387282_645496422_TF_05_03_LNK_08\"
+  style=\"color:#007185;text-decoration:none\"
+  target=\"_blank\"\u003ePrivacy Policy
+  \u003c/a\u003e\u003c/div\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e
+  \u003ca
+  href=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=1Y5MGAXUYLMGO\u0026amp;T=C\u0026amp;U=https%3A%2F%2Fwww.amazon.com.au%3Fref_%3Dpe_78387282_645496422_TF_05_04_LNK_08\u0026amp;H=X4K7YA9HAKL3RRAZHATGLCOHQPOA\u0026amp;ref_=pe_78387282_645496422_TF_05_04_LNK_08\"
+  target=\"_blank\"\u003e\u003cimg
+  src=\"https://m.media-amazon.com/images/G/01/outbound/OutboundTemplates/Smile_Logo_Light._BG240,242,242_.png\"
+  alt=\"Amazon.com.au\" height=\"43\" width=\"86\" align=\"left\"
+  style=\"display:block\"\u003e \u003cimg
+  src=\"https://m.media-amazon.com/images/G/01/outbound/OutboundTemplates/Smile_Logo_Dark.png\"
+  alt=\"Amazon.com.au\" height=\"43\" width=\"86\" align=\"left\"
+  style=\"display:none\"\u003e\u003c/a\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e
+  \u003c/td\u003e\u003c/tr\u003e\u003c/tbody\u003e\u003c/table\u003e\u003c/div\u003e\u003c/div\u003e\u003cimg
+  width=\"1\" height=\"1\"
+  src=\"https://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026amp;K=4VIDKKPFQY47\u0026amp;M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026amp;R=2H2TFU6TBA6C6\u0026amp;T=E\u0026amp;U=https%3A%2F%2Fimages-fe.ssl-images-amazon.com%2Fimages%2FG%2F01%2Fnav%2Ftransp.gif\u0026amp;H=K1GWUMPLURIYMAQLWWJPUSAMEACA\u0026amp;ref_=pe_78387282_645496422_open\"
+  alt=\"\"\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\r\n",
+  "plain": "---------- Forwarded message ---------\r\nFrom: Amazon.com.au
+  \u003corder-update@amazon.com.au\u003e\r\nDate: Mon, 16 Nov 2026 at
+  10:59\r\nSubject: Delivered: \u2018Swanson Full Spectrum...\u2019\r\nTo:
+  \u003cricardo@salinas.id.au\u003e\r\n\r\n\r\nDelivered: \u2018Swanson Full
+  Spectrum...\u2019\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f\r\n\u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c\r\n\u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c\r\n\u00ad\u034f \u200c  
+  \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f\r\n\u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c\r\n\u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c\r\n\u00ad\u034f \u200c  
+  \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f\r\n\u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c\r\n\u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c\r\n\u00ad\u034f \u200c  
+  \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f\r\n\u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c\r\n\u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c\r\n\u00ad\u034f \u200c  
+  \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f\r\n\u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c\r\n\u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c\r\n\u00ad\u034f \u200c  
+  \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f\r\n\u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c\r\n\u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f
+  \u200c   \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c\r\n\u00ad\u034f \u200c  
+  \u2007 \u00ad\u034f \u200c   \u2007 \u00ad\u034f \u200c   \u2007
+  \u00ad\u034f \u200c   \u2007 \u00ad\r\n[image: Amazon logo] [image: Amazon
+  logo]\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=2XFLA1Z194SL0\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fref%3Dpe_78387282_645496422_TNL_00_00_IMG_00_nav_logo\u0026H=AW3F4SPLKO68DA8HAR1NTSWEN8KA\u0026ref_=pe_78387282_645496422_TNL_00_00_IMG_00_nav_logo\u003e\r\n*Your
+  Orders*\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=3TEC14IYIAN5D\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fgp%2Fcss%2Forder-history%3Fref_%3Dpe_78387282_645496422_TNL_00_01_BT_00_fed_yo_default\u0026H=23OKNAJKS3MWHSZYGYJKJZC8PAWA\u0026ref_=pe_78387282_645496422_TNL_00_01_BT_00_fed_yo_default\u003e\r\n*Your\r\nAccount*\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=3OZC4BFQSKMUE\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fyour-account%3Fref_%3Dpe_78387282_645496422_TNL_00_02_BT_00_fed_ya_default\u0026H=UDZWBMYXZNVKJUG9AYHCXKFXBTUA\u0026ref_=pe_78387282_645496422_TNL_00_02_BT_00_fed_ya_default\u003e\r\n[image:
+  Header for shipment tracker]\r\nYour package was
+  delivered!\r\n\r\nDelivered today\r\nYour package was left near the front
+  door or porch.\r\n\r\n*Ricardo \u2013 PARKDALE, VIC*\r\nOrder #
+  \u202b250-8056838-5231034\r\n\r\nTrack
+  package\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=2UOD6BAXK24UY\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fprogress-tracker%2Fpackage%3F_encoding%3DUTF8%26orderId%3D250-8056838-5231034%26packageIndex%3D0%26shipmentId%3DUYJ05xlCH%26vt%3DNOTIFICATIONS%26ref_%3Dpe_78387282_645496422_p_btn_fed_track_package\u0026H=ZHTSMHJCVYCYOGSU2TVS7ZSYVTCA\u0026ref_=pe_78387282_645496422_p_btn_fed_track_package\u003e\r\n\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=3FC5USKM6GXAC\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fprogress-tracker%2Fpackage%3F_encoding%3DUTF8%26orderId%3D250-8056838-5231034%26packageIndex%3D0%26shipmentId%3DUYJ05xlCH%26vt%3DNOTIFICATIONS%26ref_%3Dpe_78387282_645496422_pod_fed_track_package\u0026H=GSC7HQGFYKCHNGAQXDLTI1NV7B8A\u0026ref_=pe_78387282_645496422_pod_fed_track_package\u003e\r\n\r\n\r\n[image:
+  Swanson Full Spectrum Saffron 15mg, 60
+  Capsules]\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=3LGLD11U10USJ\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fdp%2FB07F92W8RM%3Fref_%3Dpe_78387282_645496422_i_fed_asin_title\u0026H=Z48IAWRYSZDO89COAM71HYPPMF8A\u0026ref_=pe_78387282_645496422_i_fed_asin_title\u003e\r\n\r\n\r\n[image:
+  info icon] Tell us how we did! Rate your
+  delivery\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=2A7WD0K0QRCUE\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fdeliveryfeedback%3Fdplnk%3DY%26orderId%3D250-8056838-5231034%26shipmentId%3DUYJ05xlCH%26ref_%3Dpe_78387282_645496422_tnp_email_del_fdbk\u0026H=ZYLMXBTBC0OC3BTHCPO8A6I32AIA\u0026ref_=pe_78387282_645496422_tnp_email_del_fdbk\u003e\r\n\r\n[image:
+  info icon] Return or replace items in Your
+  Orders\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=2XMMU97892M40\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fyour-orders%2Forders%3Fref_%3Dpe_78387282_645496422_pdc_yo\u0026H=5ZZLLXFODW0KEODSCAJKU8GKJSMA\u0026ref_=pe_78387282_645496422_pdc_yo\u003e\r\n.\r\nYou
+  are receiving this service email based on a recent purchase or
+  to\r\nprovide information related to your Amazon Australia
+  account.\r\n\u00a9 2026 Amazon.com, Inc. or its affiliates. All rights
+  reserved. Amazon,\r\nAmazon.com, Amazon.com.au, the Amazon.com.au logo and
+  1-click are\r\nregistered trademarks of Amazon.com, Inc. or its
+  affiliates. This message\r\nis produced and distributed by Amazon
+  Commercial Services Pty Ltd (ABN 30\r\n616 935 623) or its
+  affiliates.\r\nPrivacy
+  Policy\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=2EX7GMLI7T6G5\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%2Fgp%2Fhelp%2Fcustomer%2Fdisplay.html%3FnodeId%3D468496%26ref_%3Dpe_78387282_645496422_TF_05_03_LNK_08\u0026H=T87NC3RUEUAGAAWQLYBQUZCHCWGA\u0026ref_=pe_78387282_645496422_TF_05_03_LNK_08\u003e\r\n[image:
+  Amazon.com.au] [image:
+  Amazon.com.au]\r\n\u003chttps://www.amazon.com.au/gp/r.html?C=3FX8HO5UAK667\u0026K=4VIDKKPFQY47\u0026M=urn:rtn:msg:202611152359053dc9e534f9fd43008032957aa6d0p0fe\u0026R=1Y5MGAXUYLMGO\u0026T=C\u0026U=https%3A%2F%2Fwww.amazon.com.au%3Fref_%3Dpe_78387282_645496422_TF_05_04_LNK_08\u0026H=X4K7YA9HAKL3RRAZHATGLCOHQPOA\u0026ref_=pe_78387282_645496422_TF_05_04_LNK_08\u003e\r\n",
+  "reply_plain": null}

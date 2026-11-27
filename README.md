@@ -3,7 +3,12 @@
 Receives CloudMailIn email webhooks and uses a local LLM (llama.cpp server,
 OpenAI-compatible chat completions API) to decide whether the email reports a
 package as **delivered** — shipping/dispatch/customs/out-for-delivery notices
-do not count — and to extract the tracking number and carrier.
+and expected or estimated delivery dates do not count — and to extract the
+tracking number and carrier. A delivery verdict is only accepted when the
+model's `evidence_phrase` appears verbatim in the email **and** describes a
+completed delivery — wording about future deliveries ("arriving", "expected",
+"out for delivery", ...) or bare status labels from order-progress trackers
+("Delivered") are treated as non-deliveries.
 
 The service responds only after the LLM has classified the email: `200` with
 `{"tracking": "...", "provider": "..."}` for deliveries, `400` for

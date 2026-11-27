@@ -27,9 +27,12 @@ const systemPrompt = `You classify inbound emails for a package tracking assista
 Decide whether the email reports that a package was actually DELIVERED to the recipient, and extract the relevant details.
 
 Rules:
-- is_delivered is true only when the email says the package or order has been delivered (e.g. "has been delivered", "was delivered", "was left near the front door", "delivered today").
-- Shipping confirmations, dispatch notices, customs clearance, "out for delivery", arrival at a facility or in the destination country, and estimated delivery dates are NOT deliveries: is_delivered is false.
-- evidence_phrase is the short quote from the email that best supports your is_delivered decision, or "" if there is none.
+- is_delivered is true only when the email confirms a completed, past-tense delivery event (e.g. "has been delivered", "was delivered", "was left near the front door", "delivered today", "we delivered your package").
+- Anything about a future or expected delivery is NOT a delivery, even if it mentions today's date: "expected delivery", "estimated delivery", "arriving today", "arriving by", "arriving <date>", "will be delivered", "scheduled for delivery", "delivery date", "out for delivery" all mean is_delivered is false.
+- Order confirmations and order-status emails ("Thanks for your order", "Your order has been placed", subjects like "Ordered: ...") are NOT deliveries. A progress tracker listing "Ordered / Shipped / Out for delivery / Delivered" as step labels is NOT a delivery statement — those words describe steps, not what happened.
+- Shipping confirmations, dispatch notices, customs clearance, arrival at a facility or in the destination country, and delivery reminders are NOT deliveries: is_delivered is false.
+- When in doubt between a completed delivery and an expected one, choose is_delivered false.
+- evidence_phrase is the short quote from the email that best supports your is_delivered decision, or "" if there is none. It must be copied VERBATIM from the email, never paraphrased or invented. When is_delivered is true, evidence_phrase MUST quote the words confirming the completed delivery; if you cannot quote one, is_delivered must be false.
 - tracking_number is the shipment tracking number exactly as written (not an order id), or "" if none is present.
 - carrier is the company delivering the package (e.g. "Amazon", "AliExpress", "Australia Post", "DHL"), taken from the sender or the content, or "" if unknown.
 
@@ -128,8 +131,9 @@ type chatCompletionResponse struct {
 
 // Classify sends the email to the LLM and parses its verdict.
 func (c *LLMClient) Classify(ctx context.Context, payload CloudMailInPayload) (*DeliveryInfo, error) {
+	emailBody := cleanBody(payload)
 	user := fmt.Sprintf("From: %s\nSubject: %s\nBody:\n%s",
-		payload.Headers.From, payload.Headers.Subject, cleanBody(payload))
+		payload.Headers.From, payload.Headers.Subject, emailBody)
 
 	reqBody := chatCompletionRequest{
 		Model: c.model,
@@ -180,7 +184,39 @@ func (c *LLMClient) Classify(ctx context.Context, payload CloudMailInPayload) (*
 		return nil, fmt.Errorf("LLM API returned no choices")
 	}
 
-	return parseDeliveryInfo(completion.Choices[0].Message.Content)
+	info, err := parseDeliveryInfo(completion.Choices[0].Message.Content)
+	if err != nil {
+		return nil, err
+	}
+	return verifyDeliveryEvidence(info, payload.Headers.Subject+"\n"+emailBody), nil
+}
+
+// futureDeliveryRegex matches wording that describes an expected, not a
+// completed, delivery; evidence containing it cannot prove a delivery.
+var futureDeliveryRegex = regexp.MustCompile(`(?i)\b(will be|expected|estimated|arriv\w*|scheduled|out for delivery|on its way|due)\b`)
+
+// verifyDeliveryEvidence downgrades a delivery verdict that is not backed by
+// the email itself: the evidence phrase must appear verbatim in the email and
+// must describe a completed delivery, not a future one or a bare status
+// label such as "Delivered" from an order-progress tracker.
+func verifyDeliveryEvidence(info *DeliveryInfo, emailText string) *DeliveryInfo {
+	if !info.IsDelivered {
+		return info
+	}
+	evidence := normalizeForMatch(info.EvidencePhrase)
+	if evidence == "" ||
+		!strings.Contains(normalizeForMatch(emailText), evidence) ||
+		futureDeliveryRegex.MatchString(evidence) ||
+		strings.Trim(evidence, ".!:") == "delivered" {
+		info.IsDelivered = false
+	}
+	return info
+}
+
+// normalizeForMatch lowercases and collapses whitespace so small formatting
+// differences between the quote and the email do not defeat the match.
+func normalizeForMatch(s string) string {
+	return strings.ToLower(whitespaceRegex.ReplaceAllString(strings.TrimSpace(s), " "))
 }
 
 // Healthy reports whether the LLM API is reachable and serving, by querying

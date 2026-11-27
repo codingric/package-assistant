@@ -84,6 +84,11 @@ func makeParseHandler(classifier Classifier) http.HandlerFunc {
 			http.Error(w, "Not a delivery", http.StatusBadRequest)
 			return
 		}
+		if strings.TrimSpace(info.EvidencePhrase) == "" {
+			log.Println("Delivery claim without evidence phrase; treating as not delivered")
+			http.Error(w, "Not a delivery", http.StatusBadRequest)
+			return
+		}
 		if info.TrackingNumber == "" {
 			log.Println("No tracking number found")
 			http.Error(w, "No tracking number found", http.StatusBadRequest)
@@ -155,7 +160,7 @@ func main() {
 	mux.HandleFunc("/parse", makeParseHandler(client))
 	mux.HandleFunc("/health", makeHealthHandler(client))
 
-	port := "8080"
+	port := getenv("PORT", "8080")
 	log.Printf("Server starting on port %s", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {
 		log.Fatalf("Server failed to start: %v", err)

@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 
@@ -90,7 +91,7 @@ func TestLLMClient_ClassifyNotDelivery(t *testing.T) {
 
 func TestLLMClient_ClassifyNormalizesMissingTracking(t *testing.T) {
 	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"left near the front door","carrier":"Amazon.com","tracking_number":"Not provided"}`)))
+		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"has been successfully delivered","carrier":"Amazon.com","tracking_number":"Not provided"}`)))
 	}))
 
 	info, err := client.Classify(context.Background(), samplePayload())
@@ -99,9 +100,96 @@ func TestLLMClient_ClassifyNormalizesMissingTracking(t *testing.T) {
 	assert.Equal(t, "", info.TrackingNumber)
 }
 
+func TestLLMClient_UngroundedEvidenceIsNotDelivery(t *testing.T) {
+	// The model claims delivery but quotes words that do not appear in the
+	// email — an expected delivery must not pass as an actual one.
+	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"was left near the front door","carrier":"AliExpress","tracking_number":"3781053936972"}`)))
+	}))
+
+	info, err := client.Classify(context.Background(), samplePayload())
+	require.NoError(t, err)
+	assert.False(t, info.IsDelivered)
+}
+
+func TestLLMClient_DeliveryWithoutEvidenceIsNotDelivery(t *testing.T) {
+	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"","carrier":"AliExpress","tracking_number":"3781053936972"}`)))
+	}))
+
+	info, err := client.Classify(context.Background(), samplePayload())
+	require.NoError(t, err)
+	assert.False(t, info.IsDelivered)
+}
+
+func TestLLMClient_EvidenceFromSubjectCounts(t *testing.T) {
+	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"Your package has been delivered","carrier":"AliExpress","tracking_number":"3781053936972"}`)))
+	}))
+
+	info, err := client.Classify(context.Background(), samplePayload())
+	require.NoError(t, err)
+	assert.True(t, info.IsDelivered)
+}
+
+func TestLLMClient_FutureEvidenceIsNotDelivery(t *testing.T) {
+	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"Arriving 7 December","carrier":"Amazon","tracking_number":"250-0993459-5847003"}`)))
+	}))
+
+	payload := samplePayload()
+	payload.HTML = `<p>Thanks for your order! Ordered Shipped Out for delivery Delivered Arriving 7 December</p>`
+
+	info, err := client.Classify(context.Background(), payload)
+	require.NoError(t, err)
+	assert.False(t, info.IsDelivered)
+}
+
+func TestLLMClient_OrderConfirmationIsNotDelivery(t *testing.T) {
+	// Reproduces an Amazon order confirmation being misread as a delivery:
+	// the model latches onto the bare "Delivered" step label of the
+	// order-progress tracker, which must not count as evidence.
+	data, err := os.ReadFile("ordered.json")
+	require.NoError(t, err)
+	var payload CloudMailInPayload
+	require.NoError(t, json.Unmarshal(data, &payload))
+
+	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(chatResponse(`{"is_delivered":true,"evidence_phrase":"Delivered","carrier":"Amazon","tracking_number":"250-0993459-5847003"}`)))
+	}))
+
+	info, err := client.Classify(context.Background(), payload)
+	require.NoError(t, err)
+	assert.False(t, info.IsDelivered)
+}
+
+func TestVerifyDeliveryEvidence(t *testing.T) {
+	email := "Subject\nThanks for your order! Ordered Shipped Out for delivery Delivered Arriving 7 December. " +
+		"Your package 3781053936972 has been successfully delivered!"
+	cases := []struct {
+		name     string
+		evidence string
+		want     bool
+	}{
+		{"past-tense statement", "has been successfully delivered", true},
+		{"future arrival date", "Arriving 7 December", false},
+		{"out-for-delivery label", "Out for delivery", false},
+		{"bare delivered label", "Delivered", false},
+		{"bare delivered label with punctuation", "Delivered.", false},
+		{"ungrounded quote", "left at the front door", false},
+		{"empty quote", "", false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			info := verifyDeliveryEvidence(&DeliveryInfo{IsDelivered: true, EvidencePhrase: tc.evidence}, email)
+			assert.Equal(t, tc.want, info.IsDelivered)
+		})
+	}
+}
+
 func TestLLMClient_ClassifyToleratesCodeFences(t *testing.T) {
 	client := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(chatResponse("```json\n{\"is_delivered\":true,\"evidence_phrase\":\"delivered\",\"carrier\":\"Amazon.com\",\"tracking_number\":\"249-4398134-5142202\"}\n```")))
+		w.Write([]byte(chatResponse("```json\n{\"is_delivered\":true,\"evidence_phrase\":\"has been successfully delivered\",\"carrier\":\"Amazon.com\",\"tracking_number\":\"249-4398134-5142202\"}\n```")))
 	}))
 
 	info, err := client.Classify(context.Background(), samplePayload())
@@ -195,6 +283,7 @@ func TestHandler_Delivery(t *testing.T) {
 		IsDelivered:    true,
 		Carrier:        "AliExpress",
 		TrackingNumber: "3781053936972",
+		EvidencePhrase: "has been successfully delivered",
 	}})
 
 	rec := postPayload(t, handler)
@@ -211,6 +300,7 @@ func TestHandler_WrappedPayload(t *testing.T) {
 		IsDelivered:    true,
 		Carrier:        "AliExpress",
 		TrackingNumber: "3781053936972",
+		EvidencePhrase: "has been successfully delivered",
 	}})
 
 	body, _ := json.Marshal(ParseRequest{Payload: samplePayload()})
@@ -226,6 +316,7 @@ func TestHandler_UnknownProvider(t *testing.T) {
 	handler := makeParseHandler(stubClassifier{info: &DeliveryInfo{
 		IsDelivered:    true,
 		TrackingNumber: "3781053936972",
+		EvidencePhrase: "has been successfully delivered",
 	}})
 
 	rec := postPayload(t, handler)
@@ -238,6 +329,18 @@ func TestHandler_NotDelivery(t *testing.T) {
 
 	rec := postPayload(t, handler)
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
+}
+
+func TestHandler_DeliveryWithoutEvidenceRejected(t *testing.T) {
+	handler := makeParseHandler(stubClassifier{info: &DeliveryInfo{
+		IsDelivered:    true,
+		TrackingNumber: "3781053936972",
+		Carrier:        "AliExpress",
+	}})
+
+	rec := postPayload(t, handler)
+	assert.Equal(t, http.StatusBadRequest, rec.Code,
+		"a delivered verdict without an evidence phrase must not raise a notification")
 }
 
 func TestHandler_NoTrackingNumber(t *testing.T) {
